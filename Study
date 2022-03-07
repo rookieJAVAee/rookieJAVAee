@@ -1,0 +1,110 @@
+package com.qf.javase.day15;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.function.Predicate;
+
+/**
+ * @author:lzc date:2022/3/7/0007 16:59
+ * @version:1.0
+ */
+public class CollectionDemo {
+    /*
+    数组 字符串 集合中获取元素个数的方法是什么？
+    数组 -- length属性
+    字符串  --  length方法
+    集合  --  size方法
+     */
+    public static void main(String[] args) {
+//        创建Collection对象
+        Collection collection = new ArrayList();
+//        向集合中添加数据
+        boolean add = collection.add("一");      //这种写法会返回“添加是否成功”的布尔值
+        collection.add("二");                    //这种写法直接添加
+        collection.add("三");
+        collection.add("四");
+        collection.add("五");
+
+//        获取当前集合中存储元素的个数
+        int size = collection.size();
+        System.out.println(size);
+
+//        删除指定的元素  返回Boolean类型的值  表示删除结果
+        boolean remove = collection.remove("二");
+//        打印检查删除后的集合内容
+        System.out.println(collection);     //可以直接打印集合  因为有toString的默认重写
+
+//        removeIf --  当集合中的元素存在符合要求的时候 ， 删除这个元素
+//        只删除符合要求的元素 --  test方法中返回值是true
+       boolean removeIf = collection.removeIf(new Predicate() {
+            @Override                               //自动补充出来的重写
+            public boolean test(Object o) {
+//                当这个元素是"三" 时  删除这个元素
+                return o.equals("三");
+            }
+        });
+
+//       上面的removeIf可以使用lambda表达式简化
+        collection.removeIf(o -> o.equals("五"));
+
+
+
+//      直接打印集合的内容
+        System.out.println(collection);
+//        判断集合中是否包含指定的元素  contains
+        boolean contains = collection.contains("四");
+        System.out.println(contains);
+
+//        判断是否是一个空集合  里面没有任何数据的集合
+//        Collection  c = null;  //集合是一个null.不是一个空集合
+        System.out.println(collection.isEmpty());
+
+
+
+//        创建新的集合对象
+        Collection c2 = new ArrayList();
+//        增加元素
+        c2.add("甲");
+        c2.add("乙");
+        c2.add("丙");
+        c2.add("丁");
+        c2.add("戊");
+        c2.add("己");
+        c2.add("庚");
+        c2.add("辛");
+//        集合和集合之间的操作
+//        将指定集合中的所有元素添加到另一个结婚中
+//        将集合c2中的所有元素增加到collection中
+
+        boolean b = collection.addAll(c2);
+        System.out.println(collection);
+
+//        将指定集合中的所有元素从另一个集合删除  --  将现在collection集合中，删除c2的所有元素
+        boolean b1 = collection.removeAll(c2);
+        System.out.println(collection);
+
+//        containsAll 判断collection中是否包含了c2的所有元素
+        collection.add("哈");
+        collection.remove("一");
+
+        boolean b2 = collection.addAll(c2);
+        boolean b3 = collection.containsAll(c2);
+        System.out.println(b3);     //true
+
+        System.out.println(collection);
+        
+        collection.remove("甲");
+        boolean b4 = collection.containsAll(c2);
+        System.out.println(b4);     //false
+
+//        retainAll  删除所有不在c2中的元素（取交集）  --  保留collection中在c2中的值
+
+        System.out.println(collection);
+        collection.retainAll(c2);
+        System.out.println(collection);
+
+
+    }
+
+
+}
